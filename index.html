@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Santa Clara County Housing Explorer</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Santa Clara County Housing Explorer">
+  <meta name="author" content="I-Kang Ding">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Santa Clara County Housing Explorer</h1>
+    <h2></h2>
+    <p>I-Kang Ding<br/>ikding@gmail.com</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Motivation &amp; Datasets</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>In this shiny app, I explore the historical real estate transactions in Santa Clara County, California, U.S.A. (often referred to as &quot;Silicon Valley&quot;) from 07/01/2011 to 09/01/2014. </p>
+
+<p>There are many real estate websites (such as Redfin and Zillow) that can search for houses for sale or historial transaction records, based on certain criteria; however, when the records are plotted on a map, there is no existing site that could map the variables (sale price, lot size, etc) with the symbols attributes (color, size, etc.) I set out to build this shiny app to satisfy this functionality. </p>
+
+<p>The raw data is downloaded from real estate websites. I started out with the Santa Clara county area because this happened to be the area that I live in. The data set only includes 10,000 transactions, which represents less than 30% of all the trasactions during this time frame. The reduction in sample size was necessary to speed up the rendering of circles on map.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>User Interface</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Each circle on the map indicates a particular transaction at a specific address. There are two attributes, color and size, for the circle; each attribute can be mapped to one of the four variables: Home type, Sale Price, Square Feet, and Price per Sq.Ft.</p>
+
+<p>The side panel also contains three additional graphs:</p>
+
+<ul>
+<li>Histogram of last sale price</li>
+<li>Histogram of price per sq.ft</li>
+<li>Smooth fit (Loess) of the last sale price versus date, broken down by home type.</li>
+</ul>
+
+<p>The graphs are reactive to the map boundaries - the data used in these three graphs only include the visilbe houses on the map.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Time-Series Trends of Selected Cities</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">p &lt;- ggplot(data = subset(d, !home.type %in% c(&quot;Multi-Family&quot;, &quot;Mobile/Manufactured Home&quot;) &amp; !city %in% c(&quot;Los Altos Hills&quot;, &quot;Milpitas&quot;, &quot;East Palo Alto&quot;, &quot;Saratoga&quot;))) + theme_bw()
+p &lt;- p + geom_smooth(aes(x = as.Date(last.sale.date), y = last.sale.price, color = home.type), method = &#39;loess&#39;)
+p &lt;- p + facet_wrap( ~ city, scales = &quot;free_y&quot;)
+</code></pre>
+
+<p><img src="assets/fig/unnamed-chunk-3.png" alt="plot of chunk unnamed-chunk-3"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Potential Future Improvements</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>There are a few ideas that I have regrading future improvements to this app:</p>
+
+<ol>
+<li><p>Adding more variables that can be mapped to attributes.</p></li>
+<li><p>Adding the option to plot density plots, as opposed to using circles to represent individual entries, to scale to larger number of entries. (Currently the app becomes very slow at above 10,000 entries.)</p></li>
+<li><p>Adding functionality to explore the price trends versus time, based on variables from user input (ex: bedrooms/baths, year built, etc)</p></li>
+</ol>
+
+<p>Please visit the <a href="http://ikding.shinyapps.io/Santa-Clara-County-Housing-Explorer/">shinapps.io</a> site for the interactive version of this shiny app, and direct questions and feedbacks to <a href="mailto:ikding@gmail.com">ikding@gmail.com</a>. Thanks!</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Motivation &amp; Datasets'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='User Interface'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Time-Series Trends of Selected Cities'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Potential Future Improvements'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
